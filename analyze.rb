@@ -37,8 +37,19 @@ class Klassextant
   def part_stems
     @part_stems ||= parts.
       map{|p| Lingua.stemmer p }.
-      sort.
-      reject{|stem| stem.size <= 2 }
+      reject{|stem| stem.sub(/[a-z]/,'').size == 1 }.
+      push('ADT','AS','FB','GL','HPP','ID','MN','MQTT','NS','NUX','PYM','NFX','OTD','QP','SSO','UI','URL','UFI'). # handcrafting
+      sort
+  end
+
+  def stem_tree
+    @stem_tree ||= parts.
+      group_by do |p|
+        part_stems.select do |stem|
+          p.start_with? stem 
+        end.first || p
+      end
+    flatten_identity_stems(@stem_tree)
   end
 
   def part_counts
@@ -73,6 +84,17 @@ class Klassextant
       map{|c| c.sub('.h','').gsub(/[_-]/,'') }
   end
 
+  def flatten_identity_stems( tree )
+    working_tree = tree
+    tree.each do |k,v|
+      if v.size == 1
+        working_tree[v] = nil
+      else
+        working_tree[k] = v
+      end
+    end
+    tree = working_tree
+  end
 end
 
 

@@ -5,9 +5,12 @@ require 'lingua/stemmer'
 
 class Klassextant
   attr_reader :base, :analytes
+  attr_accessor :debug
 
   def initialize(filename="FBclasses.txt", opt={})
     @known_stems = opt[:known_stems] || ['ADT','AS','FB','GL','HPP','ID','MN','MQTT','NS','NUX','PYM','NFX','OTD','QP','SSO','UI','URL','UFI']
+    debug = opt[:debug] || false
+
     klass_load(filename)
   end
 
@@ -54,25 +57,24 @@ class Klassextant
     #flatten_identity_stems(@stem_tree)
   end
 
-  def stem_positions
-    stem_tree.inject(stems_empty) do |counts, stem, parts|
-      analyte_tree.values.
-      counts[stem] += fb.base.map{|klass| klass.index( stem_tree.keys.first ) }.compact
-      counts
-    end
+  def stem_counts
+    unless @stem_counts
+      @stem_counts = {}
+      analyte_tree.values.each do |k|
+        k[:class_parts].each do |cp|
+          cp.each_with_index do |part, idx|
+            @stem_counts[part_stem_lookup[part]] ||= {:raw => []}
+            @stem_counts[part_stem_lookup[part]][:raw].push idx 
+          end
+        end
+      end
 
-    stem_tree.keys.inject(stems_empty) do |counts, stem|
-      counts[stem] += fb.base.map{|klass| klass.index( stem_tree.keys.first ) }.compact
-      counts
-    end
-  end
-
-  def part_stem_lookup
-    @part_stem_lookup = stem_tree.reduce({}) do |lookup, stem, parts|
-      lookup.merge( stem.last.reduce({}) do |parts, part|
-        parts[part] = stem.first
-        parts 
-      end)
+      @stem_counts.keys.each {|stem|
+        @stem_counts[stem][:clusters]  = @stem_counts[stem][:raw].group_by{|w| w }.reduce({}) {|se, g| se[g.first] = g.last.size; se }
+        @stem_counts[stem][:total_use] = @stem_counts[stem][:raw].inject(&:+)
+        @stem_counts[stem][:avg_pos]   = @stem_counts[stem][:total_use]/@stem_counts[stem][:raw].size.to_f 
+        @stem_counts[stem][:median]    = @stem_counts[stem][:clusters].max_by(&:last).first
+      }  
     end
   end
 
@@ -112,6 +114,15 @@ class Klassextant
     working_tree = {}
     tree.each { |k,v| (v.size == 1) ? working_tree[v] = nil : working_tree[k] = v }
     tree = working_tree
+  end
+
+  def part_stem_lookup
+    @part_stem_lookup = stem_tree.reduce({}) do |lookup, stem, parts|
+      lookup.merge( stem.last.reduce({}) do |parts, part|
+        parts[part] = stem.first
+        parts 
+      end)
+    end
   end
 
 end

@@ -54,7 +54,6 @@ class Klassextant
           p.start_with? stem 
         end.first || p
       end
-    #flatten_identity_stems(@stem_tree)
   end
 
   def stem_counts
@@ -95,12 +94,6 @@ class Klassextant
     @base = File.readlines(filename).
       map(&:strip).
       map{|c| c.sub('.h','').gsub(/[_-]/,'') }
-  end
-
-  def flatten_identity_stems( tree )
-    working_tree = {}
-    tree.each { |k,v| (v.size == 1) ? working_tree[v] = nil : working_tree[k] = v }
-    tree = working_tree
   end
 
 end

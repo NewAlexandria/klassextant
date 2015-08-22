@@ -76,31 +76,18 @@ class Klassextant
         @stem_counts[stem][:median]    = @stem_counts[stem][:clusters].max_by(&:last).first
       }  
     end
+    @stem_counts
   end
 
-  def part_counts
-    @ns_parts_counts ||= analytes.reduce({}) do |ag,a|
-      ag[a[:prefix]] ||= []
-      ag[a[:prefix]] << a[:class_parts].size
-      ag 
+
+  def part_stem_lookup
+    @part_stem_lookup = stem_tree.reduce({}) do |lookup, stem, parts|
+      lookup.merge( stem.last.reduce({}) do |parts, part|
+        parts[part] = stem.first
+        parts 
+      end)
     end
   end
-
-  def parts_empty
-    Hash[ parts.zip(Array.new(parts.size, [])) ]
-  end
-
-  def parts_positions 
-    @parts_positions ||= analytes.reduce( parts_empty ) do |pos, a|
-      a[:class_parts].each_with_index do |part, idx|
-        pos[part] << idx
-      end
-      pos
-    end
-  end
-
-# parts_positions['Component'].reduce(:+)/parts_positions['Component'].size.to_f
-# parts_positions['Component'].group_by(&:itself).values.max_by(&:size).first
 
   private
 
@@ -114,15 +101,6 @@ class Klassextant
     working_tree = {}
     tree.each { |k,v| (v.size == 1) ? working_tree[v] = nil : working_tree[k] = v }
     tree = working_tree
-  end
-
-  def part_stem_lookup
-    @part_stem_lookup = stem_tree.reduce({}) do |lookup, stem, parts|
-      lookup.merge( stem.last.reduce({}) do |parts, part|
-        parts[part] = stem.first
-        parts 
-      end)
-    end
   end
 
 end

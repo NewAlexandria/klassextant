@@ -63,16 +63,16 @@ class Klassextant
       analyte_tree.values.each do |k|
         k[:class_parts].each do |cp|
           cp.each_with_index do |part, idx|
-            @stem_counts[part_stem_lookup[part]] ||= {:raw => []}
-            @stem_counts[part_stem_lookup[part]][:raw].push idx 
+            @stem_counts[part_stem_lookup[part]] ||= {:positions => []}
+            @stem_counts[part_stem_lookup[part]][:positions].push idx 
           end
         end
       end
 
       @stem_counts.keys.each {|stem|
-        @stem_counts[stem][:clusters]  = @stem_counts[stem][:raw].group_by{|w| w }.reduce({}) {|se, g| se[g.first] = g.last.size; se }
-        @stem_counts[stem][:total_use] = @stem_counts[stem][:raw].inject(&:+)
-        @stem_counts[stem][:avg_pos]   = @stem_counts[stem][:total_use]/@stem_counts[stem][:raw].size.to_f 
+        @stem_counts[stem][:clusters]  = @stem_counts[stem][:positions].group_by{|w| w }.reduce({}) {|se, g| se[g.first] = g.last.size; se }
+        @stem_counts[stem][:total_use] = @stem_counts[stem][:clusters].collect(&:last).inject(&:+)
+        @stem_counts[stem][:avg_pos]   = @stem_counts[stem][:total_use]/@stem_counts[stem][:positions].size.to_f 
         @stem_counts[stem][:median]    = @stem_counts[stem][:clusters].max_by(&:last).first
       }  
     end

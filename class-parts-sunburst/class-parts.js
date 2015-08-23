@@ -1,6 +1,6 @@
 // Dimensions of sunburst.
-var width = 750;
-var height = 600;
+var width = 850;
+var height = 700;
 var radius = Math.min(width, height) / 2;
 
 // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
@@ -38,21 +38,34 @@ var arc = d3.svg.arc()
     .innerRadius(function(d) { return Math.sqrt(d.y); })
     .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
 
-// Use d3.text and d3.csv.parseRows so that we do not need to have a header
-// row, and can receive the csv as an array of arrays.
-d3.text("../data/class_parts.csv", function(text) {
-  var csv = d3.csv.parseRows(text);
-  var json = buildHierarchy(csv);
-  createVisualization(json);
-});
-
-// Main function to draw and set up the visualization, once we have the data.
-function createVisualization(json) {
-
+function loadData(file) {
   // Basic setup of page elements.
   initializeBreadcrumbTrail();
   drawLegend();
   d3.select("#togglelegend").on("click", toggleLegend);
+
+  // Use d3.text and d3.csv.parseRows so that we do not need to have a header
+  // row, and can receive the csv as an array of arrays.
+  d3.text(file, function(text) {
+    var csv = d3.csv.parseRows(text);
+    var json = buildHierarchy(csv);
+    createVisualization(json);
+  });
+}
+
+var with_fb = false;
+d3.select("#toggleFB").on("click", function() {
+  if (with_fb) {
+    loadData("../data/class_parts_no_fb.csv");
+  } else {
+    loadData("../data/class_parts.csv");
+  }
+});
+
+loadData("../data/class_parts.csv");
+
+// Main function to draw and set up the visualization, once we have the data.
+function createVisualization(json) {
 
   // Bounding circle underneath the sunburst, to make it easier to detect
   // when the mouse leaves the parent g.

@@ -2,13 +2,13 @@
 # Code for analyzing 18,000+ class names
 
 require 'lingua/stemmer'
-load    'klassextant_export'
+load    'klassextant_export.rb'
 
 class Klassextant
   attr_reader :base, :analytes
   attr_accessor :debug
 
-  include 'KlassextantExport'
+  include KlassextantExport
 
   def initialize(filename="FBclasses.txt", opt={})
     @known_stems = opt[:known_stems] || ['ADT','AS','FB','GL','HPP','ID','MN','MQTT','NS','NUX','PYM','NFX','OTD','QP','SSO','UI','URL','UFI']

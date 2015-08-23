@@ -22,14 +22,18 @@
     <script>
       $(function() {
         $( "#view-tabs" ).tabs();
+        $( "header h1" ).click(function() {
+            $( "header" ).toggleClass( "header-collapsed" );
+        });
       });
+
     </script>
   </head>
   <body>
     <div class="wrapper">
-      <header>
+      <header class="header-collapsed">
         <h1>Klassextant</h1>
-        <p>A class for deconstructing class-namespaces, such as the 18k dump of FB iOS classes</p>
+        <p id="#desc" class="desc">A class for deconstructing class-namespaces, such as the 18k dump of FB iOS classes</p>
 
         <p class="view"><a href="https://github.com/NewAlexandria/klassextant">View the Project on GitHub <small>NewAlexandria/klassextant</small></a></p>
 
@@ -44,42 +48,43 @@
         <h3>
         <a id="a-compass-rose-for-class-namespaces" class="anchor" href="#a-compass-rose-for-class-namespaces" aria-hidden="true"><span class="octicon octicon-link"></span></a>A compass-rose for class namespaces</h3>
 
-        <div id="view-tabs" style="width: 750px;">
+        <div id="view-tabs" class="view-tabs">
           <ul>
             <li><a href="#class-parts-sunburst">Class Parts</a></li>
           </ul>
           <div id="class-parts-sunburst">
-            <iframe src="/klassextant/class-parts-sunburst/" style="width: 700px; height: 700px;" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+            <iframe src="/klassextant/class-parts-sunburst/" style="width: 950px; height: 730px;" marginwidth="0" marginheight="0" scrolling="no"></iframe>
           </div>
         </div>
 
+        <footer>
+          <p>This project is maintained by <a href="https://github.com/NewAlexandria">NewAlexandria</a></p>
+          <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
 
-        <h3>
-        <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+          <h3>
+          <a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
 
-        <p>Thanks to <a href="https://github.com/quellish" class="user-mention">@quellish</a> for the gist</p>
+          <p>Thanks to <a href="https://github.com/quellish" class="user-mention">@quellish</a> for the gist</p>
 
-        <h3>
-        <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+          <h3>
+          <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
 
-        <p><a href="http://twitter.com/invis_insight">@invis_insight</a></p>
+          <p><a href="http://twitter.com/invis_insight">@invis_insight</a></p>
+        </footer>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/NewAlexandria">NewAlexandria</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
     </div>
+
     <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-66636316-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
+        <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-66636316-1");
+      pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
 
   </body>
 </html>

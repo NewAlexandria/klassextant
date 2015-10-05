@@ -59,7 +59,7 @@ function loadData(file) {
   });
 }
 
-loadData("../data/semantic_stem_tree.csv");
+loadData("../data/stem_tree_rich.csv");
 
 // Main function to draw and set up the visualization, once we have the data.
 function createVisualization(json) {

@@ -10,18 +10,32 @@ var b = {
 
 // Mapping of step names to colors.
 var colors = {
-  "FB": "#3447cf",
-  "QL": "#7b615c",
-  "Pre": "#de783b",
-  "UI": "#6ab975",
-  "URL": "#a173d1",
-  "Sub": "#21e3d1",
-  "Per": "#d17ea1",
-  "ID": "#a1a321",
-  "UFI": "#a10321",
-  "App": "#017311",
-  "PYM": "#313321",
-  "GIF": "#bbbbbb"
+	'A': 'ff0000',                 
+	'B': 'ff2000',                 
+	'C': 'ff4000',
+	'D': 'ff5f00',
+	'E': 'ff7f00',
+	'F': 'ff9f00',
+	'G': 'ffbf00',
+	'H': 'ffdf00',
+	'I': 'ffff00',
+	'J': 'ccff00',
+	'K': '99ff00',
+	'L': '66ff00',
+	'M': '33ff00',
+	'N': '00ff00',
+	'O': '00ff40',
+	'P': '00ff80',
+	'Q': '00ffbf',
+	'R': '00ffff',
+	'S': '00bfff',
+	'T': '0080ff',
+	'U': '0040ff',
+	'V': '0000ff',
+	'W': '2300ff',
+	'X': '4600ff',
+	'Y': '6800ff',
+	'Z': '8b00ff'
 };
 
 // Total size of all segments; we set this later, after loading the data.

@@ -11,7 +11,7 @@ class Klassextant
   include KlassextantExport
 
   def initialize(filename="FBclasses.txt", opt={})
-    @known_stems = opt[:known_stems] || ['ADT','AS','FB','GL','HPP','ID','MN','MQTT','NS','NUX','PYM','NFX','OTD','QP','SSO','UI','URL','UFI']
+    @known_prefixes = opt[:known_prefixes] || ['ADT','AS','FB','GL','HPP','ID','MN','MQTT','NS','NUX','PYM','NFX','OTD','QP','SSO','UI','URL','UFI']
     debug = opt[:debug] || false
 
     klass_load(filename)
@@ -46,7 +46,7 @@ class Klassextant
       reject{|p| p.scan(/^[a-z]/).any? }.
       map{|p| Lingua.stemmer p }.
       reject{|stem| stem.sub(/[a-z0-9]/,'').size == 1 }.
-      push(*@known_stems). # handcrafting
+      push(*@known_prefixes). # handcrafting
       sort
   end
 
@@ -89,6 +89,23 @@ class Klassextant
         parts 
       end)
     end
+  end
+
+  def prefixes
+    @prefixes ||= @base.map {|b| b.scan(/^[A-Z]*/).first[0..-2] }.uniq.sort.reject(&:empty?)
+  end
+
+  def prefix_tree
+    @prefix_tree = @prefixes.
+      map{|b| b[0..1] }.
+      uniq.reduce({}) do |acc,pre|
+        acc[pre] = @prefixes.group_by{|p| p.start_with?(pre) && p.size > 2 }[true] 
+        acc
+      end.
+      reject do |k,v|
+        v.nil? ||
+        (v.collect(&:size).min < 4 && v.size == 1)
+      end
   end
 
   private

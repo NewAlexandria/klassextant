@@ -29,7 +29,7 @@ d3.json("../data/stem_tree_rich.json", function(error, root) {
     .enter().append("circle")
       .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
 			.attr('class', function(d) { return d.name; })
-      .style("fill", function(d) { return d.children ? color(d.depth) : null; })
+      //.style("fill", function(d) { return d.children ? color(d.depth) : null; })
       .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
 
   var text = svg.selectAll("text")

@@ -8,10 +8,12 @@ class Klassextant
   attr_reader :base, :analytes
   attr_accessor :debug
 
+  KNOWN_PREFIXES = ['ADT','AS','FB','GL','HPP','ID','MN','MQTT','NS','NUX','PYM','NFX','OTD','QP','SSO','UI','URL','UFI']
+
   include KlassextantExport
 
   def initialize(filename="FBclasses.txt", opt={})
-    @known_prefixes = opt[:known_prefixes] || ['ADT','AS','FB','GL','HPP','ID','MN','MQTT','NS','NUX','PYM','NFX','OTD','QP','SSO','UI','URL','UFI']
+    @known_prefixes = opt[:known_prefixes] || KNOWN_PREFIXES
     debug = opt[:debug] || false
 
     klass_load(filename)
